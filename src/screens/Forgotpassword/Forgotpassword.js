@@ -3,7 +3,8 @@ import React from "react";
 import Input from "../../components/Inputs/Input";
 import Button from "../../components/Buttons/Button";
 import { useNavigation } from "@react-navigation/native";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import axios from 'axios'; 
 
 const Forgotpassword = () => {
   const navigation = useNavigation();
@@ -12,8 +13,16 @@ const Forgotpassword = () => {
 
   const EMAIL_REGEX = /[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\.[a-zA-Z]{2,4}/;
 
-  const onContinuePressed = () => {
-    navigation.navigate("Reset Confirmation");
+  const onContinuePressed = async (data) => {
+    try {
+      const response = await axios.post('http://192.168.1.2/backend/forgotpassword.php', {
+        email: data.email,
+      });
+      console.log(response.data); 
+      navigation.navigate('Reset Confirmation');
+    } catch (error) {
+      console.error('Forgot password failed', error);
+    }
   };
 
   return (

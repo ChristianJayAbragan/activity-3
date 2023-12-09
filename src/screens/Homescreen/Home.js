@@ -9,6 +9,7 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import Button from "../../components/Buttons/Button";
 import Logo from "../../../assets/images/logo.png";
+import axios from 'axios'; // Added import
 
 const Home = () => {
   const navigation = useNavigation();
@@ -16,6 +17,7 @@ const Home = () => {
   const { height } = useWindowDimensions();
 
   const onPressSignOut = () => {
+    // Perform sign out action
     navigation.navigate("Login");
   };
 

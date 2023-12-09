@@ -5,12 +5,13 @@ import {
   Image,
   useWindowDimensions,
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import Input from "../../components/Inputs/Input";
 import Button from "../../components/Buttons/Button";
 import Logo from "../../../assets/images/logo.png";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
+import axios from 'axios';
 
 const LogIn = () => {
   const {
@@ -22,10 +23,27 @@ const LogIn = () => {
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
 
-  const onLoginPress = (data) => {
-    console.log(data);
-    navigation.navigate("Home");
+  const onLoginPress = async (data) => {
+    try {
+      const response = await axios.post('http://192.168.1.2/backend/login.php', {
+        username: data.username,
+        password: data.password,
+      });
+  
+      console.log('Backend Response:', response);
+  
+      if (!response.data.error) {
+        console.log('Login successful');
+        navigation.navigate('Home');
+      } else {
+        console.log('Login failed:', response.data.error);
+      }
+    } catch (error) {
+      console.error('Login failed', error);
+    }
   };
+  
+  
 
   const onForgotPasswordPressed = () => {
     navigation.navigate("Forgot Password");
@@ -75,7 +93,7 @@ const LogIn = () => {
         onPress={onForgotPasswordPressed}
       />
       <Button
-        text="Don't have an account? Resgister here."
+        text="Don't have an account? Register here."
         onPress={onDontHaveAccountPressed}
         type="TERTIARY"
       />

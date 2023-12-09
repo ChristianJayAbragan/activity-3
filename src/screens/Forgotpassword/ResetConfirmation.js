@@ -4,25 +4,34 @@ import Input from "../../components/Inputs/Input";
 import Button from "../../components/Buttons/Button";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
+import axios from 'axios';
 
 const ResetConfirmation = () => {
   const { control, handleSubmit, watch } = useForm();
-
   const navigation = useNavigation();
 
   const pass = watch("new-pass");
 
   const code = 1234567890;
 
-  const onResetPass = () => {
-    navigation.navigate("Confirmation");
+  const onResetPass = async () => {
+    try {
+      const response = await axios.post('http://192.168.1.2/resetpassword.php', {
+        code: code,
+        newPassword: data['new-pass'],
+      });
+      console.log(response.data);
+      navigation.navigate("Confirmation");
+    } catch (error) {
+      console.error('Reset password failed', error);
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Reset Your Password</Text>
       <Text style={styles.text}>
-        We have sent a four digit code on your phone/email
+        We have sent a four-digit code on your phone/email
       </Text>
       <Input
         name="Four digit code"
@@ -30,7 +39,7 @@ const ResetConfirmation = () => {
         control={control}
         rules={{
           required: "4-digit code required",
-          maxLength: { value: 4, message: "Code should 4 digit max" },
+          maxLength: { value: 4, message: "Code should be 4 digits max" },
           pattern: {
             value: /^[0-9]*$/,
             message:

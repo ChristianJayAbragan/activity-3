@@ -8,6 +8,7 @@ import {
 import React from "react";
 import Button from "../../components/Buttons/Button";
 import { useNavigation } from "@react-navigation/native";
+import axios from 'axios';
 
 const Confirmation = () => {
   const navigation = useNavigation();
@@ -18,7 +19,7 @@ const Confirmation = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Your password has been reset sucessfully</Text>
+      <Text style={styles.text}>Your password has been reset successfully</Text>
       <Text style={styles.text}>Now Login with your new password</Text>
       <Button text="Log In" type="PRIMARY" onPress={onBackToLogin} />
     </View>

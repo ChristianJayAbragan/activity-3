@@ -5,14 +5,15 @@ import {
   useWindowDimensions,
   Image,
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import Input from "../../components/Inputs/Input";
 import Button from "../../components/Buttons/Button";
 import Logo from "../../../assets/images/logo.png";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
+import axios from 'axios'; // Added import
 
-const LogIn = () => {
+const Register = () => {
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
 
@@ -24,8 +25,18 @@ const LogIn = () => {
     navigation.navigate("Login");
   };
 
-  const onRegisterPressed = () => {
-    navigation.navigate("Login");
+  const onRegisterPressed = async (data) => {
+    try {
+      const response = await axios.post('http://192.168.1.2/backend/register.php', {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      });
+      console.log(response.data); 
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error('Registration failed', error);
+    }
   };
 
   const EMAIL_REGEX = /[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\.[a-zA-Z]{2,4}/;
@@ -126,4 +137,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LogIn;
+export default Register;
